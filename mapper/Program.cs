@@ -21,7 +21,20 @@ namespace mapper
                 Console.WriteLine(curr);
             }
 
-            FileMapper.MapFileSet(fullInputPaths, "concat.txt", "filemap");
+            string concatFile =  "concat.txt";
+            string filemapFile = "filemap";
+            string compFile = "comp.txt";
+
+            //Dump to concat
+            FileMapper.MapFileSet(fullInputPaths, concatFile, filemapFile);
+            
+            string[] concatLines = File.ReadAllLines(concatFile);
+
+            Int64[] ids = concatLines.Select(x => 
+                Int64.Parse(x.Split(new char[]{'\t'}, StringSplitOptions.RemoveEmptyEntries)[0])
+            ).ToArray();
+
+            FileMapper.GetLinesFromFileSet(ids, compFile, filemapFile);
 
         }
     }

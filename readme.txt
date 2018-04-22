@@ -21,6 +21,12 @@ If we can only fit source or target LM's into memory, the way to do it would be 
 Then last we would need a component to map the resulting stream of Score\tId back to the sentences for corpus selection.  
 
 
+To figure out where the original line came from, we need to know the original file name and the original line number.
+
+These can be encoded in two 32-bit ints or so, so having 64-bit id's ought to do it. Then we just need a table of (file id -> file location), and we have what we need.
+
+
+
 
 
 ===== Old steps from cmd line versio =====

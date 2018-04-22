@@ -116,7 +116,9 @@ namespace mapper
                         ++currLineNum;
                     }
                 }
+                fm.Save(fileMapPath);
             }
+            
         }
     }
 }
