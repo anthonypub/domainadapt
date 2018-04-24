@@ -25,7 +25,38 @@ To figure out where the original line came from, we need to know the original fi
 
 These can be encoded in two 32-bit ints or so, so having 64-bit id's ought to do it. Then we just need a table of (file id -> file location), and we have what we need.
 
+That's in mapper, invoke test like this: dotnet bin/Debug/netcoreapp2.0/mapper.dll
 
+So now the whole process, for a mono adaptation, would be to do this:
+
+Given an in-domain and out-of-domain corpus:
+
+- Run mapper on corpus so we have a single file with all of the data (one for in-domain LM, one for out of domain).
+- Upload files to hdfs
+- Build in-domain and out-of-domain language models using Jon's toolkit (modify to ignore sentence id)
+- Run hadoop job over out-of-domain data using perplexity mapper with identity reducer and appropriate sort/partiion config to get out sorted file
+- Run mapper again to get original sentences out
+
+
+To start hadoop name node:
+sbin/start-dfs.sh
+
+To view:
+http://localhost:9870/
+
+
+Which language to encode this whole thing in?
+
+Bash?
+Python?
+C#?
+Make?
+
+There's enough going on that I don't really trust myself to do this in bash, partly because I suck at it and partly because it's not well suited to the task.
+
+Most of the data processing is done by outside programs - perl for preprocessing, hadoop for lm building, hadoop for data selection and sorting, so that's not really an issue. 
+
+I'm kind of tempted to use Make. 
 
 
 
