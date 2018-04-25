@@ -2,6 +2,7 @@
 #include "LM.h"
 #include "File.h"
 #include <iostream>
+#include <string.h>
 
 using namespace std;
 
@@ -77,15 +78,16 @@ int main(int argc, char** argv)
     while ((line = sntFile.getline())) 
     {
         strcpy(lineCpy, line);
-        int len = strlen(line);
-        if(lineCpy[len-1] == '\n')
-        {
-            lineCpy[len-1]=0;
-        }
-        float indom = GetSentencePPL(line, pInDomainVocab, pInDomainLM);
-        float outdom = GetSentencePPL(line, pOutDomainVocab, pOutDomainLM);
+        const char* delim = "\t";
+        char* pId = strtok(lineCpy, delim);
+        if(pId == NULL) continue;
+        char* pLinePart = strtok(lineCpy, delim);
+        if(pLinePart == NULL) continue;
+        
+        float indom = GetSentencePPL(pLinePart, pInDomainVocab, pInDomainLM);
+        float outdom = GetSentencePPL(pLinePart, pOutDomainVocab, pOutDomainLM);
         float diff = indom - outdom;
-        cout << diff << '\t' << lineCpy << endl;        
+        cout << pId << '\t' << diff << endl;        
     }
 
 }
